@@ -5,6 +5,11 @@ https://github.com/microsoft/vscode/blob/13369a2285cf8c1163eaa3b1a1073bc7edb7858
 TODO: integrate correctly?
 */
 
+/* manually added since it seems to be necessary. why though? */
+a.link.pointer {
+  cursor: pointer;
+}
+
 html {
   scrollbar-color: var(--vscode-scrollbarSlider-background) var(--vscode-editor-background);
 }

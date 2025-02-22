@@ -1,6 +1,7 @@
 import { useEffect, useRef, createContext, useState } from 'react'
 import { LeanMonaco, LeanMonacoOptions } from 'lean4monaco'
 import LeanMonacoEditorComponent from './LeanMonacoEditor'
+import * as path from 'path'
 
 export const LeanMonacoContext = createContext<LeanMonaco|null>(null);
 
@@ -34,7 +35,7 @@ function LeanMonacoComponent({options, numberEditors} : {options: LeanMonacoOpti
             // fileName: must be a valid file inside the Lean project
             // (or lake does not read the `leanOptions` in the `lakefile`), AND
             // must be inside a folder, i.e. 'LeanProject.lean' does not work (monaco bug?) :(
-            fileName={`LeanProject/Test${i}.lean`}
+            fileName={path.join('LeanProject', `Test${i}.lean`)}
             value={`#check ${i}\ndef f : Nat → Nat := fun x ↦ x + 1\n#print f`}/>
         )}
         <div className='infoview' ref={infoviewRef}></div>

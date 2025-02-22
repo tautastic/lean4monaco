@@ -36,7 +36,8 @@ function LeanMonacoComponent({options, numberEditors} : {options: LeanMonacoOpti
             // (or lake does not read the `leanOptions` in the `lakefile`), AND
             // must be inside a folder, i.e. 'LeanProject.lean' does not work (monaco bug?) :(
             fileName={path.join('LeanProject', `Test${i}.lean`)}
-            value={`#check ${i}\ndef f : Nat → Nat := fun x ↦ x + 1\n#print f`}/>
+            /* note: The sample content here is used for the cypress tests. */
+            value={`#check ${i}\ndef f${i} : Nat → Nat := fun x ↦ x + 1\n#print f${i}`}/>
         )}
         <div className='infoview' ref={infoviewRef}></div>
       </LeanMonacoContext.Provider>

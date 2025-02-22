@@ -22,7 +22,7 @@ const leanProjectPath = path.join(__dirname, 'LeanProject')
 
 function startServerProcess() {
 
-  const serverProcess = cp.spawn("lean", ["--server"], { cwd: leanProjectPath })
+  const serverProcess = cp.spawn("lake", ["serve", "--"], { cwd: leanProjectPath })
 
   serverProcess.on('error', error =>
     console.error(`Launching Lean Server failed: ${error}`)

@@ -147,6 +147,7 @@ export class IFrameInfoWebviewFactory implements InfoWebviewFactory {
         </style>
         <link rel="stylesheet" href="${new URL('./vscode-lean4/lean4-infoview/src/infoview/index.css', import.meta.url)}">
         <link rel="stylesheet" href="${new URL('./css/vscode_webview.css', import.meta.url)}">
+        <link rel="stylesheet" href="${new URL('./css/custom.css', import.meta.url)}">
 
       </head>
       <body>

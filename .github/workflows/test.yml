@@ -60,6 +60,7 @@ jobs:
         if: matrix.os != 'windows-latest'
         with:
           lake-package-directory: "demo/server/LeanProject"
+          use-github-cache: false
           use-mathlib-cache: false
           auto-config: false
           build: false

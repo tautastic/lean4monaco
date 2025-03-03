@@ -33,14 +33,22 @@ export class IFrameInfoWebview implements InfoWebview {
 export class IFrameInfoWebviewFactory implements InfoWebviewFactory {
   private infoviewElement: HTMLElement
   private iframe: HTMLIFrameElement
+  rpc: Rpc
+  editorApi: EditorApi
 
-  constructor(private themeService: IThemeService, private configurationService: IConfigurationService, private fontFiles: FontFace[]) { }
+
+  constructor(
+    private themeService: IThemeService,
+    private configurationService: IConfigurationService,
+    private fontFiles: FontFace[]
+  ) { }
 
   setInfoviewElement(infoviewElement: HTMLElement) {
     this.infoviewElement = infoviewElement
   }
 
   make(editorApi: EditorApi, stylesheet: string, column: number) {
+    this.editorApi = editorApi
     this.iframe = document.createElement("iframe")
     this.infoviewElement.append(this.iframe)
     this.iframe.contentWindow!.document.open()
@@ -55,7 +63,7 @@ export class IFrameInfoWebviewFactory implements InfoWebviewFactory {
     // inside the webview through the standard message event.
     // The receiving of these messages is done inside webview\index.ts where it
     // calls window.addEventListener('message',...
-    const rpc = new Rpc(m => {
+    this.rpc = new Rpc(m => {
       try {
         // JSON.stringify is needed here to serialize getters such as `Position.line` and `Position.character`
         void this.iframe.contentWindow!.postMessage(JSON.stringify(m))
@@ -63,19 +71,19 @@ export class IFrameInfoWebviewFactory implements InfoWebviewFactory {
         // ignore any disposed object exceptions
       }
     })
-    rpc.register(editorApi)
+    this.rpc.register(editorApi)
 
     // Similarly, we can received data from the webview by listening to onDidReceiveMessage.
     document.defaultView!.addEventListener('message', m => {
       if (m.source != this.iframe.contentWindow) { return }
       try {
-        rpc.messageReceived(JSON.parse(m.data))
+        this.rpc.messageReceived(JSON.parse(m.data))
       } catch {
         // ignore any disposed object exceptions
       }
     })
 
-    return new IFrameInfoWebview(this.iframe, rpc)
+    return new IFrameInfoWebview(this.iframe, this.rpc)
   }
 
   private updateCssVars() {
@@ -147,7 +155,7 @@ export class IFrameInfoWebviewFactory implements InfoWebviewFactory {
         </style>
         <link rel="stylesheet" href="${new URL('./vscode-lean4/lean4-infoview/src/infoview/index.css', import.meta.url)}">
         <link rel="stylesheet" href="${new URL('./css/vscode_webview.css', import.meta.url)}">
-
+        <link rel="stylesheet" href="${new URL('./css/custom.css', import.meta.url)}">
       </head>
       <body>
         <div id="react_root"></div>
